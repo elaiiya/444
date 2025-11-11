@@ -1,0 +1,30 @@
+# .github/workflows/build_info.yml
+name: Build Info Update
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build_info:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Клонирование репозитория
+        uses: actions/checkout@v3
+
+      - name: Установка Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Обновление файла build_info.txt
+        run: python PJ11_gitinfo_04.py
+
+      - name: Сохранение изменений
+        run: |
+          git config user.name "CI Bot"
+          git config user.email "ci@example.com"
+          git add build_info.txt
+          git commit -m "Автоматическое обновление build_info.txt"
+          git push
